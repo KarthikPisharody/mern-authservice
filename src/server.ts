@@ -1,4 +1,8 @@
 function hey(name: string) {
-    console.log("Hello, " + name);
+    const user = {
+        name: "Karthik",
+    };
+    const fname = user.name;
+    console.log(`Hello, ${fname}` + name);
 }
-hey("Gokul");
+hey("Pisharody");
