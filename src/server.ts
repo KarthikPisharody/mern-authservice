@@ -1,10 +1,3 @@
-function hey(name: string) {
-    const user = {
-        name: "Karthik",
-    };
+import { Config } from "./config";
 
-    const fname = user.name;
-
-    console.log(`Hello, ${fname}` + name);
-}
-hey("Pisharody");
+console.log(Config.PORT);
