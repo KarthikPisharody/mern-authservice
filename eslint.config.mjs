@@ -3,13 +3,10 @@ import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 
 export default [
-
-  
   {
     ignores: ["dist", "node_modules"],
   },
 
-  
   js.configs.recommended,
 
   {
@@ -22,10 +19,9 @@ export default [
         sourceType: "module",
       },
 
-      
       globals: {
         process: "readonly",
-        console: "readonly", 
+        console: "readonly",
       },
     },
 
@@ -34,7 +30,8 @@ export default [
     },
 
     rules: {
-     "dot-notation": "error",
+     // "no-console": "error",
+     // "dot-notation": "error",
     },
   },
 ];
