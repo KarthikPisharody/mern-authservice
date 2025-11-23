@@ -1,0 +1,26 @@
+{
+  "name": "auth_service",
+  "version": "1.0.0",
+  "description": "THe user authentication service",
+  "license": "ISC",
+  "author": "Karthik Pisharody",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . ",
+    "format-fix": "prettier . --write ",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
+    "eslint": "^9.39.1",
+    "prettier": "3.6.2",
+    "typescript": "^5.9.3"
+  }
+}
