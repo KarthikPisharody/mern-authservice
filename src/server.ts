@@ -1,14 +1,15 @@
 import { Config } from './config';
 import app from './config/app';
-
+import logger from './config/logger';
 const startServer = () => {
   const PORT = Config.PORT;
 
   try {
     app.listen(PORT, () => {
-      console.log(`Auth service is running on port ${PORT}`);
+      logger.info(`Auth service running on port`, { port: PORT });
     });
   } catch (err) {
+    ``;
     console.error(err);
     console.log(1);
   }
