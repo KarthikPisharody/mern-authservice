@@ -2,7 +2,6 @@ import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 
-
 export default [
   {
     ignores: ["dist", "node_modules"],
@@ -52,18 +51,18 @@ export default [
   },
 
   {
-  files: ["**/*.test.ts", "**/*.spec.ts"],
-  languageOptions: {
-    globals: {
-      describe: "readonly",
-      it: "readonly",
-      test: "readonly",
-      expect: "readonly",
-      beforeAll: "readonly",
-      afterAll: "readonly",
-      beforeEach: "readonly",
-      afterEach: "readonly",
+    files: ["**/*.test.ts", "**/*.spec.ts"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+      },
     },
   },
-}
 ];
