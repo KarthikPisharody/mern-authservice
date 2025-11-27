@@ -7,12 +7,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
+    "dev": "nodemon -L src/server.ts",
     "test": "jest --watch --runInBand",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . ",
     "format-fix": "prettier . --write ",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
