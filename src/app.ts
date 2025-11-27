@@ -1,12 +1,15 @@
 import express, { NextFunction, Request, Response } from 'express';
-import logger from './logger';
+import logger from './config/logger';
 import { HttpError } from 'http-errors';
+import authRouter from './routes/auth';
 
 export const app = express();
 
 app.get('/', (req, res) => {
   res.send('Hello , welcome to the server');
 });
+
+app.use('/auth', authRouter);
 
 // global error handler
 app.use(
