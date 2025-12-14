@@ -1,12 +1,14 @@
+import { config } from 'dotenv';
+import path from 'path';
+
 function requiredEnv(name: string) {
   const value = process.env[name];
   if (!value) throw new Error(`Missing environment variable: ${name}`);
   return value;
 }
 
-const path = require('path');
-require('dotenv').config({
-  path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
+config({
+  path: path.join(process.cwd(), `.env.${process.env.NODE_ENV}`),
 });
 
 export const Config = {

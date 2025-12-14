@@ -1,7 +1,26 @@
 import request from 'supertest';
 import app from '../../app';
+import { User } from '../../entity/User';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../../config/data-source';
+import { truncateTables } from '../utils/index';
 
 describe('POST /auth/register', () => {
+  let connection: DataSource;
+
+  beforeAll(async () => {
+    connection = await AppDataSource.initialize();
+  });
+
+  beforeEach(async () => {
+    //Truncate the DB
+    await truncateTables(connection);
+  });
+
+  afterAll(async () => {
+    await connection.destroy();
+  });
+
   describe('Given all fields', () => {
     it('should return 201 status code', async () => {
       //AAA
@@ -33,13 +52,21 @@ describe('POST /auth/register', () => {
     });
 
     it('it should have user data in database', async () => {
+      //Arrange
       const userData = {
         name: 'Karthik',
         email: 'karthikpisharody@gmail.com',
         password: 'secret',
       };
 
+      //Act
       await request(app).post('/auth/register').send(userData);
+
+      //Assert
+      const userRepository = connection.getRepository(User);
+      const users = await userRepository.find();
+
+      expect(users).toHaveLength(1);
     });
   });
 

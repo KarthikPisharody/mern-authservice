@@ -7,8 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev nodemon -L src/server.ts",
-    "test": "jest --watch --runInBand",
+    "dev": "cross-env NODE_ENV=dev nodemon -L --exec tsx src/server.ts",
+    "test": "cross-env NODE_ENV=test jest --watch --runInBand",
     "lint:fix": "eslint . --fix",
     "lint:check": "eslint . ",
     "format-fix": "prettier . --write ",
@@ -33,6 +33,7 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "lint-staged": {
