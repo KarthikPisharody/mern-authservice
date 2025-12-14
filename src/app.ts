@@ -6,6 +6,7 @@ import 'reflect-metadata';
 
 export const app = express();
 
+app.use(express.json());
 app.get('/', (req, res) => {
   res.send('Hello , welcome to the server');
 });
