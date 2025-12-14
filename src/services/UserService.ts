@@ -6,6 +6,7 @@ export class UserService {
   // eslint-disable-next-line no-unused-vars
   constructor(private userRepository: Repository<User>) {}
   async create({ name, email, password }: UserData) {
-    await this.userRepository.save({ name, email, password });
+    const user = await this.userRepository.save({ name, email, password });
+    return user;
   }
 }
