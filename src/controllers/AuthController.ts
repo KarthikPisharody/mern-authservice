@@ -1,16 +1,26 @@
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { userRequest } from '../types';
 import { UserService } from '../services/UserService';
+import { Logger } from 'winston';
 
 class AuthController {
-  // eslint-disable-next-line no-unused-vars
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private logger: Logger,
+  ) {}
 
-  async register(req: userRequest, res: Response) {
+  async register(req: userRequest, res: Response, next: NextFunction) {
     const { name, email, password } = req.body;
 
-    const user = await this.userService.create({ name, email, password });
-    res.status(201).json({ id: user.id });
+    this.logger.debug('Request to create user with data', { name, email });
+    try {
+      const user = await this.userService.create({ name, email, password });
+
+      this.logger.info('User has been registered');
+      res.status(201).json({ id: user.id });
+    } catch (err) {
+      next(err);
+    }
   }
 }
 

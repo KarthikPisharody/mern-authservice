@@ -1,12 +1,20 @@
 import { Repository } from 'typeorm';
 import { User } from '../entity/User';
 import { UserData } from '../types';
+import createHttpError from 'http-errors';
 
 export class UserService {
-  // eslint-disable-next-line no-unused-vars
   constructor(private userRepository: Repository<User>) {}
   async create({ name, email, password }: UserData) {
-    const user = await this.userRepository.save({ name, email, password });
-    return user;
+    try {
+      const user = await this.userRepository.save({ name, email, password });
+      return user;
+    } catch {
+      const error = createHttpError(
+        500,
+        'User failed to register in the database',
+      );
+      throw error;
+    }
   }
 }

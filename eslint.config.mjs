@@ -45,8 +45,17 @@ export default [
     },
 
     rules: {
-      // "no-console": "error",
-      // "dot-notation": "error",
+      // Turn off base rule
+      "no-unused-vars": "off",
+      
+      // Use TypeScript-specific rule with proper config
+      "@typescript-eslint/no-unused-vars": ["error", {
+         "args": "none", 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "ignoreRestSiblings": true
+      }],
     },
   },
 
