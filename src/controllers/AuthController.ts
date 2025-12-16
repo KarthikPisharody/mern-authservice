@@ -13,6 +13,7 @@ class AuthController {
     const { name, email, password } = req.body;
 
     this.logger.debug('Request to create user with data', { name, email });
+
     try {
       const user = await this.userService.create({ name, email, password });
 

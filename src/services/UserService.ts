@@ -8,6 +8,11 @@ import bcrypt from 'bcrypt';
 export class UserService {
   constructor(private userRepository: Repository<User>) {}
   async create({ name, email, password }: UserData) {
+    const user = await this.userRepository.findOne({ where: { email: email } });
+    if (user) {
+      const error = createHttpError(400, 'Email already exists');
+      throw error;
+    }
     //Hash the password using bcrypt
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
