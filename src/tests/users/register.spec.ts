@@ -4,6 +4,7 @@ import { User } from '../../entity/User';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../config/data-source';
 import { Roles } from '../../constants';
+import { isJWT } from '../utils';
 
 describe('POST /auth/register', () => {
   let connection: DataSource;
@@ -147,6 +148,39 @@ describe('POST /auth/register', () => {
       expect(res.statusCode).toBe(400);
 
       expect(users).toHaveLength(1);
+    });
+
+    it('should store the access and refresh tokens inside the cookie ', async () => {
+      //Arrange
+      const userData = {
+        name: 'Karthik',
+        email: 'karthikpisharody@gmail.com',
+        password: 'secret1234',
+      };
+
+      //Act
+      const res = await request(app).post('/auth/register').send(userData);
+
+      //Assert
+      let accessToken = null;
+      let refreshToken = null;
+      interface Headers {
+        ['set-cookie']: string[];
+      }
+
+      const cookies = (res.headers as unknown as Headers)['set-cookie'] || [];
+
+      cookies.forEach((cookie) => {
+        if (cookie.startsWith('accessToken=')) {
+          accessToken = cookie.split(';')[0]?.split('=')[1] ?? null;
+        } else if (cookie.startsWith('refreshToken=')) {
+          refreshToken = cookie.split(';')[0]?.split('=')[1] ?? null;
+        }
+      });
+
+      expect(accessToken).not.toBeNull();
+      expect(refreshToken).not.toBeNull();
+      expect(isJWT(accessToken)).toBeTruthy();
     });
   });
 

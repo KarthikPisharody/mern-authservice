@@ -22,6 +22,23 @@ class AuthController {
     const { name, email, password } = req.body;
     this.logger.debug('Request to create user with data', { name, email });
 
+    const accessToken = 'sghgfjiehfueih';
+    const refreshToken = 'sjfkghdihffjd';
+
+    res.cookie('accessToken', accessToken, {
+      domain: 'localhost',
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60, //1h
+      httpOnly: true, //Very important
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      domain: 'localhost',
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60 * 24 * 365, //1 year
+      httpOnly: true,
+    });
+
     try {
       const user = await this.userService.create({ name, email, password });
 
