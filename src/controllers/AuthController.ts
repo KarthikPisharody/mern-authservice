@@ -8,6 +8,7 @@ import { UserService } from '../services/UserService';
 import { Logger } from 'winston';
 import { validationResult } from 'express-validator';
 import { Buffer } from 'buffer';
+import { Config } from '../config';
 
 class AuthController {
   constructor(
@@ -54,7 +55,11 @@ class AuthController {
         issuer: 'auth-register',
       });
 
-      const refreshToken = 'sjfkghdihffjd';
+      const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET, {
+        algorithm: 'HS256',
+        expiresIn: '1y',
+        issuer: 'auth-service',
+      });
 
       res.cookie('accessToken', accessToken, {
         domain: 'localhost',
