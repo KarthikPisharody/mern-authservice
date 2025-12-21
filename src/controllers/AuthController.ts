@@ -9,6 +9,8 @@ import { Logger } from 'winston';
 import { validationResult } from 'express-validator';
 import { Buffer } from 'buffer';
 import { Config } from '../config';
+import { RefreshToken } from '../entity/RefreshToken';
+import { AppDataSource } from '../config/data-source';
 
 class AuthController {
   constructor(
@@ -55,10 +57,20 @@ class AuthController {
         issuer: 'auth-register',
       });
 
+      //Persisting the refresh tokens
+
+      const YEAR_IN_MS = 1000 * 60 * 60 * 24 * 365;
+      const refreshTokenRepo = AppDataSource.getRepository(RefreshToken);
+      const newRefreshToken = await refreshTokenRepo.save({
+        expiresAt: new Date(Date.now() + YEAR_IN_MS),
+        user: user,
+      });
+
       const refreshToken = sign(payload, Config.REFRESH_TOKEN_SECRET, {
         algorithm: 'HS256',
         expiresIn: '1y',
         issuer: 'auth-service',
+        jwtid: String(newRefreshToken.id),
       });
 
       res.cookie('accessToken', accessToken, {
