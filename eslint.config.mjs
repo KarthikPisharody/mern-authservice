@@ -1,7 +1,7 @@
 import js from "@eslint/js";
 import tseslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
-import globals from 'globals';
+import globals from "globals";
 
 export default [
   {
@@ -14,7 +14,7 @@ export default [
     files: ["**/*.js"],
     languageOptions: {
       globals: {
-        ...globals.node,  // Fixed: was "globals: globals.node"
+        ...globals.node, // Fixed: was "globals: globals.node"
         module: "readonly",
         require: "readonly",
         __dirname: "readonly",
@@ -35,7 +35,7 @@ export default [
       },
 
       globals: {
-        ...globals.node,  // Add this to include all Node globals
+        ...globals.node, // Add this to include all Node globals
         process: "readonly",
         console: "readonly",
         module: "readonly",
@@ -66,7 +66,7 @@ export default [
     files: ["**/*.test.ts", "**/*.spec.ts"],
     languageOptions: {
       globals: {
-        ...globals.node,  // Add Node globals for test files too
+        ...globals.node, // Add Node globals for test files too
         describe: "readonly",
         it: "readonly",
         test: "readonly",
