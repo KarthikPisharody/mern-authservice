@@ -20,8 +20,8 @@ export class RefreshToken {
   user: User;
 
   @UpdateDateColumn()
-  updatedAt: number;
+  updatedAt: Date;
 
   @CreateDateColumn()
-  createdAt: number;
+  createdAt: Date;
 }
