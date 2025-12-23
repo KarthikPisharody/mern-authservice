@@ -50,7 +50,7 @@ describe('POST /auth/login', () => {
       expect(res.status).toBe(400);
     });
 
-    it('should return 201 status code if user logged in', async () => {
+    it('should return 200 status code if user logged in', async () => {
       const RegisterData = {
         name: 'Karthik',
         email: 'karthikpisharody@gmail.com',
@@ -65,7 +65,7 @@ describe('POST /auth/login', () => {
       };
 
       const res = await request(app).post('/auth/login').send(LoginData);
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(200);
     });
 
     it('should return store the tokens inside the cookie', async () => {
