@@ -42,7 +42,7 @@ router.post(
     authController.login(req as any, res, next),
 );
 
-router.post(
+router.get(
   '/self',
   authentication,
   (req: Request, res: Response, next: NextFunction) =>

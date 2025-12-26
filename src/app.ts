@@ -6,6 +6,8 @@ import authRouter from './routes/auth';
 import cookieParser from 'cookie-parser';
 export const app = express();
 
+app.use(express.static('public', { dotfiles: 'allow' }));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -17,9 +19,9 @@ app.use('/auth', authRouter);
 
 // global error handler
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-  console.log('FULL ERROR STACK:', err.stack);
+  // console.log('FULL ERROR STACK:', err.stack);
   logger.error(err.message);
-  const statusCode = err.statusCode || 500;
+  const statusCode = err.statusCode || err.status || 500;
   res.status(statusCode).json({
     errors: [
       {

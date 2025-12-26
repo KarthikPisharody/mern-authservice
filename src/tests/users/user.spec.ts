@@ -63,7 +63,7 @@ describe('POST /auth/self', () => {
       );
 
       const res = await request(app)
-        .post('/auth/self')
+        .get('/auth/self')
         .set('Cookie', [`accessToken=${accessToken}`])
         .send();
 
@@ -95,7 +95,7 @@ describe('POST /auth/self', () => {
 
       //Add token to cookie
       const res = await request(app)
-        .post('/auth/self')
+        .get('/auth/self')
         .set('Cookie', [`accessToken=${accessToken}`])
         .send();
 
@@ -129,13 +129,35 @@ describe('POST /auth/self', () => {
 
       //Add token to cookie
       const res = await request(app)
-        .post('/auth/self')
+        .get('/auth/self')
         .set('Cookie', [`accessToken=${accessToken}`])
         .send();
 
       //Assert
       //Check if user id matches with the registered user
       expect(res.body).not.toHaveProperty('password');
+    });
+
+    it('should return 401 status code if token does not exist', async () => {
+      //Register the user
+      const userData = {
+        name: 'Karthik',
+        email: 'karthikpisharody@gmail.com',
+        password: 'secret1234',
+      };
+
+      const userRepository = connection.getRepository(User);
+      await userRepository.save({
+        ...userData,
+        role: Roles.CUSTOMER,
+      });
+
+      //Add token to cookie
+      const res = await request(app).get('/auth/self').send();
+
+      //Assert
+      //Check if user id matches with the registered user
+      expect(res.status).toBe(401);
     });
   });
 });
