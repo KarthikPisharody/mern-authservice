@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
-import { userRequest } from '../types';
+import { AuthRequest, userRequest } from '../types';
 import { UserService } from '../services/UserService';
 import { Logger } from 'winston';
 import { validationResult } from 'express-validator';
@@ -145,6 +145,12 @@ class AuthController {
     } catch (err) {
       next(err);
     }
+  }
+
+  async self(req: AuthRequest, res: Response, next: NextFunction) {
+    console.log(req.authUser);
+    const user = await this.userService.findById(req.authUser.sub);
+    res.json(user);
   }
 }
 

@@ -1,0 +1,28 @@
+import { expressjwt } from 'express-jwt';
+import { expressJwtSecret } from 'jwks-rsa';
+import { Config } from '../config';
+import { Request } from 'express';
+
+export default expressjwt({
+  secret: expressJwtSecret({
+    jwksUri: Config.JWKS_URI,
+    cache: true,
+    rateLimit: true,
+  }),
+  algorithms: ['RS256'],
+  requestProperty: 'authUser',
+  getToken(req: Request) {
+    const authHeader = req.headers.authorization;
+
+    //Bearer "token"
+    if (authHeader && authHeader.split(' ')[1] !== 'undefined') {
+      const token = authHeader.split(' ')[1];
+      if (token) {
+        return token;
+      }
+    }
+
+    const { accessToken } = req.cookies;
+    return accessToken;
+  },
+});
