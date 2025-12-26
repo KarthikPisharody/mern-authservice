@@ -103,5 +103,39 @@ describe('POST /auth/self', () => {
       //Check if user id matches with the registered user
       expect(res.body.id).toBe(data.id);
     });
+
+    it('should exclude password from user data', async () => {
+      //Register the user
+      const userData = {
+        name: 'Karthik',
+        email: 'karthikpisharody@gmail.com',
+        password: 'secret1234',
+      };
+
+      const userRepository = connection.getRepository(User);
+      const data = await userRepository.save({
+        ...userData,
+        role: Roles.CUSTOMER,
+      });
+      //Generate token
+      const accessToken = jwt.sign(
+        {
+          sub: String(data.id),
+          role: data.role,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      //Add token to cookie
+      const res = await request(app)
+        .post('/auth/self')
+        .set('Cookie', [`accessToken=${accessToken}`])
+        .send();
+
+      //Assert
+      //Check if user id matches with the registered user
+      expect(res.body).not.toHaveProperty('password');
+    });
   });
 });
