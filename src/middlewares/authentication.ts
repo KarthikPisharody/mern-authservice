@@ -10,7 +10,6 @@ export default expressjwt({
     rateLimit: true,
   }),
   algorithms: ['RS256'],
-  requestProperty: 'authUser',
   getToken(req: Request) {
     const authHeader = req.headers.authorization;
 

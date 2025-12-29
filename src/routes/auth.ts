@@ -10,6 +10,7 @@ import { RefreshToken } from '../entity/RefreshToken';
 import loginValidator from '../validators/login-validator';
 import { credentialService } from '../services/CredentialService';
 import authentication from '../middlewares/authentication';
+import validateRefreshToken from '../middlewares/validateRefreshToken';
 
 const router = express.Router();
 
@@ -47,6 +48,13 @@ router.get(
   authentication,
   (req: Request, res: Response, next: NextFunction) =>
     authController.self(req as any, res, next),
+);
+
+router.post(
+  '/refresh',
+  validateRefreshToken,
+  (req: Request, res: Response, next: NextFunction) =>
+    authController.refresh(req as any, res, next),
 );
 
 export default router;

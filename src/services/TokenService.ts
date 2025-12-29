@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import createHttpError from 'http-errors';
+import { Response } from 'express';
 import { JwtPayload, sign } from 'jsonwebtoken';
 import { Buffer } from 'buffer';
 import { Config } from '../config';
@@ -47,5 +48,24 @@ export class TokenService {
       user: user,
     });
     return newRefreshToken;
+  }
+
+  storeInCookie(res: Response, accessToken: string, refreshToken: string) {
+    res.cookie('accessToken', accessToken, {
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60, //1h
+      httpOnly: true, //Very important
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      sameSite: 'strict',
+      maxAge: 1000 * 60 * 60 * 24 * 365, //1 year
+      httpOnly: true,
+    });
+    return;
+  }
+
+  async deleteRefreshToken(tokenId: number) {
+    return await this.refreshTokenRepo.delete({ id: tokenId });
   }
 }

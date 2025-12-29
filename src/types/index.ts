@@ -10,9 +10,14 @@ export interface userRequest extends Request {
   body: UserData;
 }
 
-export interface AuthRequest extends Request {
-  authUser: {
+export interface AuthRequest extends Omit<Request, 'auth'> {
+  auth: {
     sub: number;
     role: string;
+    id: string;
   };
+}
+
+export interface RefreshTokenPayload {
+  id: string;
 }
