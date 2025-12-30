@@ -8,7 +8,7 @@ function requiredEnv(name: string) {
 }
 
 config({
-  path: path.join(process.cwd(), `.env.${process.env.NODE_ENV}`),
+  path: path.join(process.cwd(), `.env.${process.env.NODE_ENV || 'dev'}`),
 });
 
 export const Config = {
