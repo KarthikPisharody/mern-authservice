@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { AppDataSource } from '../../config/data-source';
 import request from 'supertest';
 import app from '../../app';
+import { Tenant } from '../../entity/Tenant';
 
 describe('POST /tenants', () => {
   let connection: DataSource;
@@ -28,6 +29,18 @@ describe('POST /tenants', () => {
       };
       const res = await request(app).post('/tenants').send(tenantData);
       expect(res.statusCode).toBe(201);
+    });
+
+    it('should create an tenant in the database', async () => {
+      const tenantData = {
+        name: 'Tenant1',
+        address: 'Maharashtra,India',
+      };
+      const res = await request(app).post('/tenants').send(tenantData);
+      const tenantRepo = connection.getRepository(Tenant);
+      const tenants = await tenantRepo.find();
+      expect(tenants).toHaveLength(1);
+      expect(res.body.id).toBe(tenants[0]?.id);
     });
   });
 });

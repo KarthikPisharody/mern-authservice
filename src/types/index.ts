@@ -6,8 +6,17 @@ export interface UserData {
   password: string;
 }
 
+export interface TenantData {
+  name: string;
+  address: string;
+}
+
 export interface userRequest extends Request {
   body: UserData;
+}
+
+export interface tenantRequest extends Request {
+  body: TenantData;
 }
 
 export interface AuthRequest extends Omit<Request, 'auth'> {
