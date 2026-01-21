@@ -193,6 +193,14 @@ class AuthController {
       return;
     }
   }
+
+  async createTenant(req: userRequest, res: Response, next: NextFunction) {
+    try {
+      res.status(201).json({});
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 export default AuthController;

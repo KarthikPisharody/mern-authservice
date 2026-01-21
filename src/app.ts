@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import logger from './config/logger';
 import { HttpError } from 'http-errors';
 import authRouter from './routes/auth';
+import tenantRouter from './routes/tenants';
 import cookieParser from 'cookie-parser';
 export const app = express();
 
@@ -16,6 +17,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', authRouter);
+
+app.use('/tenants', tenantRouter);
 
 // global error handler
 app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
