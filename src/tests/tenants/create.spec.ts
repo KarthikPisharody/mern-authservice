@@ -53,7 +53,6 @@ describe('POST /tenants', () => {
   describe('Given all fields', () => {
     it('should return 201 status code', async () => {
       const tenantData = {
-        id: 1,
         name: 'Tenant1',
         address: 'Maharashtra,India',
       };
@@ -136,6 +135,50 @@ describe('POST /tenants', () => {
       const tenants = await tenantRepo.find();
       expect(tenants).toHaveLength(0);
       expect(res.statusCode).toBe(403);
+    });
+  });
+
+  describe('Fields are missing', () => {
+    it('should return 400 status code if name is empty', async () => {
+      const tenantData = {
+        name: '',
+        address: 'Maharashtra,India',
+      };
+      const adminToken = jwt.sign(
+        {
+          sub: '1',
+          role: Roles.ADMIN,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      const res = await request(app)
+        .post('/tenants')
+        .set('Cookie', [`accessToken=${adminToken}`])
+        .send(tenantData);
+      expect(res.statusCode).toBe(400);
+    });
+
+    it('should return 400 status code if address is empty', async () => {
+      const tenantData = {
+        name: 'Tenant1',
+        address: '',
+      };
+      const adminToken = jwt.sign(
+        {
+          sub: '1',
+          role: Roles.ADMIN,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      const res = await request(app)
+        .post('/tenants')
+        .set('Cookie', [`accessToken=${adminToken}`])
+        .send(tenantData);
+      expect(res.statusCode).toBe(400);
     });
   });
 });
