@@ -4,6 +4,7 @@ import logger from '../config/logger';
 import { TenantService } from '../services/TenantService';
 import { Tenant } from '../entity/Tenant';
 import { TenantController } from '../controllers/TenantController';
+import authentication from '../middlewares/authentication';
 
 const router = express.Router();
 
@@ -13,8 +14,11 @@ const tenantService = new TenantService(tenantRepository);
 
 const tenantController = new TenantController(tenantService, logger);
 
-router.post('/', (req: Request, res: Response, next: NextFunction) =>
-  tenantController.createTenant(req as any, res, next),
+router.post(
+  '/',
+  authentication,
+  (req: Request, res: Response, next: NextFunction) =>
+    tenantController.createTenant(req as any, res, next),
 );
 
 export default router;
