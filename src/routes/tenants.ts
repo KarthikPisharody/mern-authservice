@@ -5,6 +5,8 @@ import { TenantService } from '../services/TenantService';
 import { Tenant } from '../entity/Tenant';
 import { TenantController } from '../controllers/TenantController';
 import authentication from '../middlewares/authentication';
+import { Roles } from '../constants';
+import { canAccess } from '../middlewares/canAccess';
 
 const router = express.Router();
 
@@ -17,6 +19,7 @@ const tenantController = new TenantController(tenantService, logger);
 router.post(
   '/',
   authentication,
+  canAccess([Roles.ADMIN]),
   (req: Request, res: Response, next: NextFunction) =>
     tenantController.createTenant(req as any, res, next),
 );

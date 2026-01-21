@@ -111,5 +111,31 @@ describe('POST /tenants', () => {
       expect(tenants).toHaveLength(0);
       expect(res.statusCode).toBe(401);
     });
+
+    it('should return 403 status code if the user is not an admin', async () => {
+      const tenantData = {
+        name: 'Tenant1',
+        address: 'Maharashtra,India',
+      };
+
+      const managerToken = jwt.sign(
+        {
+          sub: '1',
+          role: Roles.MANAGER,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      const res = await request(app)
+        .post('/tenants')
+        .set('Cookie', [`accessToken=${managerToken}`])
+        .send(tenantData);
+
+      const tenantRepo = connection.getRepository(Tenant);
+      const tenants = await tenantRepo.find();
+      expect(tenants).toHaveLength(0);
+      expect(res.statusCode).toBe(403);
+    });
   });
 });
