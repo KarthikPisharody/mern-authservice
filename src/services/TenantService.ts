@@ -18,4 +18,20 @@ export class TenantService {
       throw error;
     }
   }
+
+  async findById(id: number) {
+    return await this.tenantRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async update(id: number, tenantData: TenantData) {
+    await this.tenantRepository.update(id, tenantData);
+  }
+
+  async delete(id: number) {
+    await this.tenantRepository.delete(id);
+  }
 }

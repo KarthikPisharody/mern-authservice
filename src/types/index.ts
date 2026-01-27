@@ -11,6 +11,12 @@ export interface TenantData {
   address: string;
 }
 
+export interface findTenantReq {
+  body: {
+    id: string;
+  };
+}
+
 export interface userRequest extends Request {
   body: UserData;
 }
