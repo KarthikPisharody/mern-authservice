@@ -8,6 +8,7 @@ import authentication from '../middlewares/authentication';
 import { Roles } from '../constants';
 import { canAccess } from '../middlewares/canAccess';
 import tenantValidator from '../validators/tenant-validator';
+import tenantListValidator from '../validators/tenant-list-validator';
 
 const router = express.Router();
 
@@ -24,6 +25,13 @@ router.post(
   canAccess([Roles.ADMIN]),
   (req: Request, res: Response, next: NextFunction) =>
     tenantController.createTenant(req as any, res, next),
+);
+
+router.get(
+  '/',
+  tenantListValidator,
+  (req: Request, res: Response, next: NextFunction) =>
+    tenantController.listTenants(req as any, res, next),
 );
 
 router.get(

@@ -36,3 +36,9 @@ export interface AuthRequest extends Omit<Request, 'auth'> {
 export interface RefreshTokenPayload {
   id: string;
 }
+
+export interface TenantQueryParams {
+  q: string;
+  currentPage: number;
+  perPage: number;
+}
