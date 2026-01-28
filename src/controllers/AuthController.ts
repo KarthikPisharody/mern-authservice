@@ -7,6 +7,7 @@ import { validationResult } from 'express-validator';
 import { TokenService } from '../services/TokenService';
 import createHttpError from 'http-errors';
 import { credentialService } from '../services/CredentialService';
+import { Roles } from '../constants';
 
 class AuthController {
   constructor(
@@ -29,7 +30,12 @@ class AuthController {
     this.logger.debug('Request to create user with data', { name, email });
 
     try {
-      const user = await this.userService.create({ name, email, password });
+      const user = await this.userService.create({
+        name,
+        email,
+        password,
+        role: Roles.CUSTOMER,
+      });
 
       this.logger.info('User has been registered');
 

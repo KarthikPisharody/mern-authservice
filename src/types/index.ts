@@ -4,6 +4,7 @@ export interface UserData {
   name: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export interface TenantData {
@@ -41,4 +42,12 @@ export interface TenantQueryParams {
   q: string;
   currentPage: number;
   perPage: number;
+}
+
+export interface CreateUserRequest extends Request {
+  body: {
+    name: string;
+    email: string;
+    password: string;
+  };
 }
