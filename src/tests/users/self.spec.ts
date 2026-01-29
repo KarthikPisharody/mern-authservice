@@ -113,5 +113,35 @@ describe('REQUEST /users/:id', () => {
       expect(res.status).toBe(200);
       expect(users).toHaveLength(0);
     });
+
+    it('should return manager user data when requested by admin', async () => {
+      const userData = {
+        name: 'Karthik',
+        email: 'karthikpisharody@gmail.com',
+        password: 'secret1234',
+      };
+
+      const adminToken = jwt.sign(
+        {
+          sub: '1',
+          role: Roles.ADMIN,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      const userRepo = connection.getRepository(User);
+      const user = await userRepo.save({ ...userData, role: Roles.MANAGER });
+
+      const res = await request(app)
+        .get(`/users/${user.id}`)
+        .set('Cookie', [`accessToken=${adminToken}`])
+        .send();
+
+      expect(res.status).toBe(200);
+      expect(res.body.email).toBe(userData.email);
+      expect(res.body.name).toBe(userData.name);
+      expect(res.body.role).toBe(Roles.MANAGER);
+    });
   });
 });

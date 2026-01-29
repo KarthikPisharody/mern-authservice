@@ -43,4 +43,13 @@ router.delete(
   },
 );
 
+router.get(
+  '/:id',
+  authentication,
+  canAccess([Roles.ADMIN]),
+  async (req: Request, res: Response, next: NextFunction) => {
+    userController.getOne(req as any, res as any, next);
+  },
+);
+
 export default router;
