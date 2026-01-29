@@ -84,5 +84,34 @@ describe('REQUEST /users/:id', () => {
       expect(res.status).toBe(200);
       expect(users[0]?.name).toBe(updatedUserData.name);
     });
+
+    it('should delete user data properly ', async () => {
+      const userData = {
+        name: 'Karthik',
+        email: 'karthikpisharody@gmail.com',
+        password: 'secret1234',
+      };
+
+      const adminToken = jwt.sign(
+        {
+          sub: '1',
+          role: Roles.ADMIN,
+        },
+        privateKey,
+        { algorithm: 'RS256', keyid: 'test-key-id' },
+      );
+
+      const userRepo = connection.getRepository(User);
+      const user = await userRepo.save({ ...userData, role: Roles.MANAGER });
+
+      const res = await request(app)
+        .delete(`/users/${user.id}`)
+        .set('Cookie', [`accessToken=${adminToken}`])
+        .send();
+
+      const users = await userRepo.find();
+      expect(res.status).toBe(200);
+      expect(users).toHaveLength(0);
+    });
   });
 });

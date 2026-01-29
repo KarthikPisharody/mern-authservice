@@ -28,7 +28,20 @@ export class UserController {
       next(err);
     }
   }
-
+  async delete(req: CreateUserRequest, res: Response, next: NextFunction) {
+    const userId = (req as any).params.id;
+    if (isNaN(Number(userId))) {
+      const error = createHttpError(400, 'Invalid url param.');
+      return next(error);
+    }
+    try {
+      await this.userService.deleteUser(Number(userId));
+      this.logger.info('User has been deleted', { id: userId });
+      res.status(200).json({});
+    } catch (err) {
+      next(err);
+    }
+  }
   async update(req: CreateUserRequest, res: Response, next: NextFunction) {
     const { name, email, password } = req.body;
     const userId = (req as any).params.id;
