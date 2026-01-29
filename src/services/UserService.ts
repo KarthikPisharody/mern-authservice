@@ -53,4 +53,8 @@ export class UserService {
       },
     });
   }
+
+  async updateUser(id: number, userData: UserData) {
+    return await this.userRepository.update(id, userData);
+  }
 }
